@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public GameObject livesHolder;
+    public GameObject gameOverPanel;
 
     public Text scoreText;
 
@@ -17,9 +19,6 @@ public class GameManager : MonoBehaviour
 
     
     
-
-    
-
     private void Awake()
     {
         Instance = this;
@@ -41,7 +40,6 @@ public class GameManager : MonoBehaviour
         if (lives > 0)
         {
             lives--;
-            print("Lives remain: " + lives);
             livesHolder.transform.GetChild(lives).gameObject.SetActive(false);
         }
 
@@ -54,8 +52,17 @@ public class GameManager : MonoBehaviour
     }
     public void GameOver()
     {
-        CandySpawner.Instance.StopSpawningCandies();
         GameObject.Find("Player").GetComponent<PlayerController>().canMove = false;
-        print("Game Over!");
+        CandySpawner.Instance.StopSpawningCandies();
+        gameOverPanel.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene("Game");
+    }
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }
